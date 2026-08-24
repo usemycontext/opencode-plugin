@@ -1,0 +1,39 @@
+{
+  "name": "opencode-usemycontext",
+  "version": "1.0.0",
+  "description": "Your personal context layer for AI, served to OpenCode over MCP. Map each folder to one of your @handle profiles so every session in that folder reads the right context.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "rules/usemycontext.md",
+    "opencode.example.json",
+    ".umc.example",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "context",
+    "mcp",
+    "memory",
+    "profile",
+    "usemycontext",
+    "personal-context",
+    "context-layer"
+  ],
+  "author": {
+    "name": "UseMyContext",
+    "url": "https://usemycontext.ai"
+  },
+  "homepage": "https://usemycontext.ai",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usemycontext/opencode-plugin"
+  },
+  "license": "MIT"
+}

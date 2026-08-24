@@ -1,0 +1,7 @@
+# UseMyContext folder mapping.
+# Copy this file to ".umc" in a repo to map that folder to one of your projects.
+# Every OpenCode session started in this folder then reads the mapped context.
+# Find projectId and @handle in the UseMyContext web app (usemycontext.ai).
+
+projectId=p2
+handle=@work

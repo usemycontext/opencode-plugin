@@ -1,0 +1,12 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "usemycontext": {
+      "type": "remote",
+      "url": "https://mcp.usemycontext.ai/mcp",
+      "enabled": true,
+      "oauth": {}
+    }
+  },
+  "instructions": [".opencode/usemycontext.md"]
+}
