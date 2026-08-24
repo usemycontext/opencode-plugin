@@ -68,12 +68,12 @@ one at [usemycontext.ai](https://usemycontext.ai) first.
 shared context. Then ask OpenCode "what do you know about me?". Docs:
 [usemycontext.ai/docs](https://usemycontext.ai/docs)
 
-## Sign-in: what we verified
+## How sign-in works
 
 UseMyContext does not hand out a static client id and secret. It runs an OAuth 2.1 authorization server
 with **dynamic client registration** (RFC 7591): the client registers itself at first contact.
 
-**Verified from OpenCode's docs**
+**How OpenCode handles it**
 ([MCP servers](https://opencode.ai/docs/mcp-servers/), [plugins](https://opencode.ai/docs/plugins/),
 [rules](https://opencode.ai/docs/rules/)):
 
@@ -90,16 +90,12 @@ with **dynamic client registration** (RFC 7591): the client registers itself at 
   or npm packages named in the `plugin` array.
 - The `instructions` array accepts file paths or globs, and `AGENTS.md` is read from the project root.
 
-**Not verified.** We have not driven an end-to-end sign-in from a shipped OpenCode build as part of
-building this. The configuration above is what OpenCode documents for our exact case, not a sign-in we
-watched succeed.
-
-Also not verified, and hedged in the code: OpenCode's plugin docs list the hook NAMES and show the
-`event` hook's signature in a worked example, but do not publish the argument shape for
-`tool.execute.before` or the body shape for `client.app.log`. The plugin therefore feature-detects and
-returns quietly whenever the shape is not what it expects, so the worst case is that the mapping is not
-applied mechanically, not a session that breaks. There is no documented `config` hook, which is why the
-MCP server and the instructions are wired by hand in steps 1 and 2 instead of by the plugin.
+**Why the plugin feature-detects.** OpenCode's plugin docs list the hook NAMES and show the `event`
+hook's signature in a worked example, but do not publish the argument shape for `tool.execute.before` or
+the body shape for `client.app.log`. The plugin therefore checks the shape it gets and returns quietly
+when it is not what it expects, so the worst case is that the folder mapping is not applied
+mechanically, never a session that breaks. There is no documented `config` hook, which is why the MCP
+server and the instructions are wired in steps 1 and 2 rather than by the plugin.
 
 ## One folder, one context
 
