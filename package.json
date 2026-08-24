@@ -1,6 +1,6 @@
 {
   "name": "opencode-usemycontext",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Your personal context layer for AI, served to OpenCode over MCP. Map each folder to one of your @handle profiles so every session in that folder reads the right context.",
   "type": "module",
   "main": "index.js",

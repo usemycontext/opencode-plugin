@@ -15,7 +15,8 @@ before the context is lost.
 OpenCode splits this across three pieces, because an OpenCode plugin cannot register an MCP server or add
 standing instructions on its own. The first two go in your `opencode.json` (project-level) or
 `~/.config/opencode/opencode.json` (global); [`opencode.example.json`](./opencode.example.json) is both
-of them in one file. The third is a file you copy into place, with no config entry at all.
+of them in one file, written for a PROJECT config (see step 2 for the one line a global config must
+change). The third is a file you copy into place, with no config entry at all.
 
 **1. The MCP server.** This is the part that actually connects you.
 
@@ -37,11 +38,22 @@ Then run `opencode mcp auth usemycontext` and complete the browser sign-in, or j
 tool and let OpenCode start the flow when the server answers 401.
 
 **2. The instructions.** Copy [`rules/usemycontext.md`](./rules/usemycontext.md) into your repo (for
-example to `.opencode/usemycontext.md`) and point the `instructions` array at it:
+example to `.opencode/usemycontext.md`) and point the `instructions` array at it. In a **project**
+`opencode.json`, a repo-relative path is right:
 
 ```json
 { "instructions": [".opencode/usemycontext.md"] }
 ```
+
+In a **global** `~/.config/opencode/opencode.json`, use an ABSOLUTE path to your own copy instead:
+
+```json
+{ "instructions": ["/Users/you/.config/opencode/usemycontext.md"] }
+```
+
+A relative path in the global config resolves per repository, so every repo you clone that happens to
+carry a file at `.opencode/usemycontext.md` would load ITS copy as your standing agent instructions. An
+absolute path always loads the file you wrote.
 
 If you would rather not add a file, paste its contents into your `AGENTS.md` instead. OpenCode reads
 `AGENTS.md` from the project root, and `~/.config/opencode/AGENTS.md` globally.
@@ -109,6 +121,10 @@ To bind a folder to a project, drop a `.umc` file in the project root
 projectId=p2
 handle=@work
 ```
+
+A `projectId` may only be letters, digits, `_` and `-`, up to 32 characters, and a `handle` only `@`
+followed by letters, digits and `-`, up to 40. Anything else and the whole marker is ignored, so a
+repository you did not write cannot use one to talk to your assistant.
 
 `projectId` is what scopes the reads. `handle` is an optional readable label. Find both in the web app on
 the project's page. With no `.umc`, the folder reads your account's active profile.

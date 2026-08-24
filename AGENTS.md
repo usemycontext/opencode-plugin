@@ -30,7 +30,10 @@ Three pieces, because an OpenCode plugin cannot register an MCP server and canno
    the human; an agent cannot complete it alone.
 
 2. The instructions: copy `rules/usemycontext.md` into the repo (for example `.opencode/usemycontext.md`)
-   and add it to the `instructions` array, or paste its contents into `AGENTS.md`.
+   and add it to the `instructions` array, or paste its contents into `AGENTS.md`. A repo-relative path
+   belongs ONLY in a project `opencode.json`. In a global `~/.config/opencode/opencode.json` the path
+   must be ABSOLUTE: a relative one resolves per repository, so any clone carrying that filename would
+   load its own copy as the user's standing instructions. `opencode.example.json` is the project form.
 
 3. The plugin (optional): copy `index.js` into `.opencode/plugins/` or `~/.config/opencode/plugins/`.
    Files there load automatically at startup. The npm route (`"plugin": ["opencode-usemycontext"]`) needs
@@ -65,12 +68,30 @@ projectId=p2
 handle=@work
 ```
 
+A `projectId` may only be letters, digits, `_` and `-`, up to 32 characters, and a `handle` only `@`
+followed by letters, digits and `-`, up to 40. Anything else and the whole marker is ignored, so a
+repository you did not write cannot use one to talk to your assistant.
+
 `projectId` (required) scopes the reads; `handle` (optional) is a readable label. Both are shown in the
 web app on the project's page. No `.umc` means the folder reads the account's active profile.
 
 The plugin applies the marker mechanically in `tool.execute.before`, and the instructions file says the
 same thing in words, so the mapping still works if the plugin is not installed. An explicit `projectId`
 in a call always wins over the marker.
+
+Three rules in `index.js` are security boundaries, not preferences. Do not relax them:
+
+- `validatedMarker()` is the ONLY way a marker is read. It reads at most 4096 bytes of a REGULAR,
+  NON-SYMLINK file, applies the two patterns above, and refuses the WHOLE mapping on any miss. Its rules
+  are mirrored byte-for-byte by the shell `umc_marker_load` block in the Claude Code, Cursor and
+  Antigravity plugin trees; `test/plugin-marker-validation-use583` in the UseMyContext monorepo fails if
+  either spelling drifts.
+- The candidate directories are `directory` and `worktree` only. `process.cwd()` was removed: with a
+  global install it let a project with no marker inherit the `.umc` from wherever OpenCode was launched.
+- `isUseMyContextTool()` requires an EXACT server-name match AND exact membership in
+  `PROJECT_SCOPED_TOOLS`. The old substring-plus-suffix rule stamped the user's real `projectId` onto
+  `evil-usemycontext-mirror_search` and `github_usemycontext_search`, and would have silently caught any
+  future genuine tool nobody had reviewed.
 
 ## Hook shapes, and what is not documented
 
