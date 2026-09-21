@@ -57,7 +57,7 @@ const PROJECT_SCOPED_TOOLS = [
 ];
 
 // ---------------------------------------------------------------------------
-// THE SHARED .umc MARKER VALIDATOR (USE-583)
+// THE SHARED .umc MARKER VALIDATOR
 //
 // This is the JS half of one rule with two spellings. The sh half is the
 // `umc_marker_load` block, byte-identical, in all three shell plugin trees:
@@ -65,8 +65,8 @@ const PROJECT_SCOPED_TOOLS = [
 //   claude-code-plugin/usemycontext/scripts/umc-session.sh
 //   cursor-plugin/plugins/usemycontext/scripts/umc-session.sh
 // The trees ship as separate public repositories and cannot import a shared
-// file, so test/plugin-marker-validation-use583 pins the rules on BOTH sides,
-// drives ONE corpus through both, and fails the moment either spelling drifts.
+// file, so a shared regression suite pins the rules on BOTH sides, drives ONE
+// corpus through both, and fails the moment either spelling drifts.
 //
 // Why it exists: a ".umc" marker is attacker-controlled the moment you clone
 // somebody else's repository, and our own docs suggest committing one. Its
@@ -169,8 +169,8 @@ function validatedMarker(dir) {
  * The first candidate directory that actually carries a valid marker wins.
  * process.cwd() is deliberately NOT a candidate: with a global install it let a
  * project with no marker of its own silently inherit the .umc from wherever
- * OpenCode happened to be launched. test/plugin-marker-validation-use583 pins
- * that by BEHAVIOUR - it launches this module in a child process whose working
+ * OpenCode happened to be launched. The regression suite pins that by
+ * BEHAVIOUR - it launches this module in a child process whose working
  * directory carries a marker and asserts nothing is stamped - rather than by
  * grepping for the name, so this comment is free to say what it means.
  */

@@ -84,8 +84,8 @@ Three rules in `index.js` are security boundaries, not preferences. Do not relax
 - `validatedMarker()` is the ONLY way a marker is read. It reads at most 4096 bytes of a REGULAR,
   NON-SYMLINK file, applies the two patterns above, and refuses the WHOLE mapping on any miss. Its rules
   are mirrored byte-for-byte by the shell `umc_marker_load` block in the Claude Code, Cursor and
-  Antigravity plugin trees; `test/plugin-marker-validation-use583` in the UseMyContext monorepo fails if
-  either spelling drifts.
+  Antigravity plugin trees, and the UseMyContext maintainers' regression suite fails if either
+  spelling drifts.
 - The candidate directories are `directory` and `worktree` only. `process.cwd()` was removed: with a
   global install it let a project with no marker inherit the `.umc` from wherever OpenCode was launched.
 - `isUseMyContextTool()` requires an EXACT server-name match AND exact membership in
